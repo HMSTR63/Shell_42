@@ -6,7 +6,7 @@
 /*   By: malaamir <malaamir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 21:48:53 by sojammal          #+#    #+#             */
-/*   Updated: 2025/05/26 16:21:31 by malaamir         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:54:09 by malaamir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,5 @@ int	main(int argc, char **argv, char **envp)
 	while (handle_one_line(&env))
 		;
 	ft_free_env(env);
-	return (ft_update_exit_status(0, 0));
+	return (ft_update_exit_status(0, 63));
 }

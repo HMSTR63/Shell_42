@@ -70,7 +70,6 @@ parsing/expansion/heredoc_utils_env.c \
 parsing/expansion/heredoc_utils_number.c \
 parsing/expansion/heredoc_utils_question.c \
 parsing/expansion/utils_expansion.c \
-parsing/debug_func/ft_debug.c \
 parsing/parsing_utils/ft_status.c \
 parsing/parsing_utils/clean_dollars.c \
 parsing/parsing_utils/nodes_join_v1.c \

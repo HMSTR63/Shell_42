@@ -6,7 +6,7 @@
 /*   By: malaamir <malaamir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:02:37 by malaamir          #+#    #+#             */
-/*   Updated: 2025/05/28 15:43:44 by malaamir         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:45:42 by malaamir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	execute_commands(t_cmd *cmd_list, t_env *env)
 {
 	t_cmd_exec	exec;
 	char		**envp;
+	int			ret;
 
 	envp = env_list_to_envp(env);
 	if (!envp)
@@ -68,6 +69,12 @@ int	execute_commands(t_cmd *cmd_list, t_env *env)
 		return (free_envp(envp), 1);
 	exec.read_end = -1;
 	exec.index = 0;
-	handle_command_loop(cmd_list, &exec, envp, &env);
+	ret = handle_command_loop(cmd_list, &exec, envp, &env);
+	if (ret != 0)
+	{
+		free(exec.pids);
+		free_envp(envp);
+		return (ret);
+	}
 	return (wait_and_cleanup(&exec, envp));
 }
