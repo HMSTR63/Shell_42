@@ -95,7 +95,7 @@ LDLIB = -L$(READLINE_LIB) -lreadline
 
 #------------------------------ Compiler and Flags ------------------------------#
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
 #------------------------------ Executable --------------------------------------#
 NAME = minishell

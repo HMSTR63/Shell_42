@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sojammal <sojammal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:49:24 by sojammal          #+#    #+#             */
-/*   Updated: 2025/05/22 20:49:50 by sojammal         ###   ########.fr       */
+/*   Updated: 2025/06/03 23:11:16 by sojammal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,15 @@ static void	remove_token(t_token **head, t_token *to_remove)
 
 static int	should_remove_token(t_token *curr)
 {
+	if (curr->value && curr->type == SPCE && !curr->next && !curr->prev)
+		return (0);
 	if (!(curr->value && curr->value[0] == '\0' && curr->type != SPCE))
+		return (0);
+	if (curr->prev && curr->prev->prev
+		&& (curr->prev->prev->type == REDIR_OUT
+			|| curr->prev->prev->type == REDIR_IN
+			|| curr->prev->prev->type == APPEND
+			|| curr->prev->prev->type == HEREDOC))
 		return (0);
 	if (curr->prev && curr->prev->type == SPCE
 		&& curr->prev->prev
@@ -38,7 +46,7 @@ static int	should_remove_token(t_token *curr)
 		&& curr->hidden == 1)
 		return (1);
 	if (!curr->prev && curr->hidden == 1)
-		return (1);
+		return (0);
 	return (0);
 }
 

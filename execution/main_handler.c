@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaamir <malaamir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:15:45 by malaamir          #+#    #+#             */
-/*   Updated: 2025/05/28 15:45:26 by malaamir         ###   ########.fr       */
+/*   Updated: 2025/06/03 23:13:04 by sojammal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ void	fd_cleaner(void)
 	}
 }
 
+static void	exit_on_eof(void)
+{
+	printf("exit\n");
+	clear_history();
+	gc_malloc(0, 12);
+	exit(ft_update_exit_status(0, 0));
+}
+
 int	handle_one_line(t_env **env)
 {
 	char	*line;
@@ -57,8 +65,7 @@ int	handle_one_line(t_env **env)
 
 	line = readline("minishell$ ");
 	if (!line)
-		return (ft_update_exit_status(0, 63), printf("exit\n"),
-			clear_history(), gc_malloc(0, 12), 0);
+		exit_on_eof();
 	if (*line)
 		add_history(line);
 	prompt = ft_strdup_gc(line);

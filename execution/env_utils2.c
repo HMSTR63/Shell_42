@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaamir <malaamir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:48:18 by malaamir          #+#    #+#             */
-/*   Updated: 2025/05/23 12:08:38 by malaamir         ###   ########.fr       */
+/*   Updated: 2025/06/03 23:13:52 by sojammal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ t_env	*handel_null_env(t_env	*head)
 	head = NULL;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return (perror("pwd"), exit(1), NULL);
+		return (perror("pwd"), free(pwd), exit(1), NULL);
 	val = ft_strjoin("PWD=", pwd);
+	free(pwd);
 	handle_one_export("PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.",
 		&head);
 	handle_one_export(val, &head);
 	handle_one_export("_=/usr/bin/env", &head);
+	free(val);
 	return (head);
 }
 
