@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmstrx <hmstrx@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:14:50 by malaamir          #+#    #+#             */
-/*   Updated: 2025/06/03 22:43:25 by hmstrx           ###   ########.fr       */
+/*   Updated: 2025/06/04 21:44:05 by sojammal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,9 @@ typedef struct s_heredoc
 	int				quoted;
 }			t_heredoc;
 
-// SHARED // 
+// SHARED //
 
 // helpers
-void	print_tokens(t_token *current);
 int			ft_atoi(const char *str);
 char		*ft_strchr(const char *s, int c);
 int			ft_strcmp(const char *s1, const char *s2);
