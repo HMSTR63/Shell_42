@@ -6,7 +6,7 @@
 /*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:15:45 by malaamir          #+#    #+#             */
-/*   Updated: 2025/06/03 23:13:04 by sojammal         ###   ########.fr       */
+/*   Updated: 2025/06/05 01:58:20 by sojammal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void	fd_cleaner(void)
 
 static void	exit_on_eof(void)
 {
-	printf("exit\n");
+	write(1, "\033[1A", 4);
+	write(1, "\033[2K", 4);
+	write(1, "minishell$ ", 11);
+	write(1, "exit\n", 5);
 	clear_history();
 	gc_malloc(0, 12);
 	exit(ft_update_exit_status(0, 0));
