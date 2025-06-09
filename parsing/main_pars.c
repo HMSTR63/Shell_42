@@ -68,6 +68,8 @@ t_cmd	*process_input(char *input, t_env *env)
 	t_token	*tokens;
 	t_cmd	*cmd_list;
 
+	if (!input || !*input)
+		return (NULL);
 	if (!validate_and_tokenize(input, &tokens))
 		return (NULL);
 	if (!expand_and_check_redirs(tokens, env))
