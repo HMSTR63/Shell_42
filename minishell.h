@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: sojammal <sojammal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:14:50 by malaamir          #+#    #+#             */
-/*   Updated: 2025/06/05 01:16:12 by sojammal         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:18:15 by sojammal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <signal.h>
 # include <limits.h>
 # include <errno.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -37,16 +38,12 @@ typedef struct s_alloc
 	struct s_alloc	*next;
 }	t_alloc;
 
-// ENV
-
 typedef struct l_env
 {
 	char			*value;
 	char			*name;
 	struct l_env	*next;
 }			t_env;
-
-// EXECUTE COMMANDS
 
 typedef struct s_cmd_exec
 {
@@ -57,8 +54,6 @@ typedef struct s_cmd_exec
 	pid_t	last_pid;
 	pid_t	*pids;
 }	t_cmd_exec;
-
-// TOKEN & COMMAND
 
 typedef enum e_type
 {
@@ -94,8 +89,6 @@ typedef struct s_data
 	int			exit_status;
 }			t_data;
 
-// REDIRECTIONS
-
 typedef struct s_redir
 {
 	t_type			type;
@@ -105,16 +98,12 @@ typedef struct s_redir
 	struct s_redir	*next;
 }			t_redir;
 
-// COMMANDS
-
 typedef struct s_cmd
 {
 	t_token			*args;
 	t_redir			*redir;
 	struct s_cmd	*next;
 }			t_cmd;
-
-// PROCESS
 
 typedef struct s_child_args
 {
@@ -125,8 +114,6 @@ typedef struct s_child_args
 	t_env		**env;
 }			t_child_args;
 
-// HEREDOC
-
 typedef struct s_heredoc
 {
 	const char		*delim;
@@ -134,9 +121,6 @@ typedef struct s_heredoc
 	int				quoted;
 }			t_heredoc;
 
-// SHARED //
-
-// helpers
 int			ft_atoi(const char *str);
 char		*ft_strchr(const char *s, int c);
 int			ft_strcmp(const char *s1, const char *s2);
@@ -161,17 +145,12 @@ int			ft_isspace(char c);
 long long	ft_atoll(const char *str);
 size_t		count_tokens(t_token *token);
 
-// memory management
-
 void		ft_free_env(t_env *env);
 void		free_argv(char **av);
 void		free_split(char **arr);
 void		free_envp(char **envp);
 
-// EXECUTION PART //
-
 // builtins
-
 int			ft_echo(t_cmd *cmd, t_env **env);
 int			ft_cd(t_cmd *cmd, t_env **env);
 int			ft_pwd(t_cmd *cmd, t_env **env);
@@ -186,7 +165,6 @@ int			cd_walk_path(const char *path, t_env **env);
 void		sort_env_array(t_env **arr);
 
 // builtin utils
-
 int			print_export_list(t_env *env);
 t_env		**build_env_array(t_env *env);
 void		print_env_array(t_env **arr);
@@ -198,7 +176,6 @@ void		print_error(const char *cmd, const char *msg);
 void		heredoc_sigint_handler(int sig);
 
 // exe utils
-
 int			setup_redirections(t_cmd *cmd);
 char		*find_executable(char *cmd, t_env *env);
 char		**token_to_av(t_token *token);
@@ -214,14 +191,14 @@ int			start_command(t_cmd *cmd, t_cmd_exec *exec,
 void		handle_permission_or_directory(char *target, char **argv);
 void		launch_exec(char **argv, t_child_args *args);
 void		handle_path_null(char **argv);
+void		setup_after_fork(t_cmd *cmd, t_cmd_exec *exec);
+int			handle_pipe_and_fork(t_cmd *cmd, t_cmd_exec *exec);
 
 //exe
-
 int			execute_commands(t_cmd *cmd_list, t_env *env);
 int			count_cmds(t_cmd *cmd_list);
 
 // env_utils
-
 t_env		*init_env(char **envp);
 int			env_set(t_env **env, const char *name, const char *value);
 int			env_unset(t_env **env, const char *name);
@@ -233,8 +210,7 @@ t_env		*append_env_node(t_env *head, t_env **tail, char *env);
 int			update_existing_env(t_env *env, const char *name,
 				const char *value);
 
-// main handsling
-
+// main handling
 void		handle_single_builtin(t_cmd *cmd, t_env **env);
 int			handle_one_line(t_env **env);
 void		delim_of_heredoc(t_token *tokens);
@@ -272,16 +248,13 @@ void		ft_add_arg_to_cmd(t_cmd *cmd, t_token *arg);
 void		ft_add_redir_to_cmd(t_cmd *cmd, t_type type,
 				char *value, int quoted);
 t_cmd		*ft_create_cmd(void);
-char		*remove_quotes(char *str);
 char		*remove_squotes(char *str);
 char		*remove_dquotes(char *str, int quoted);
 void		field_split_tokens(t_token **tokens);
-void		fix_heredoc_delimiters(t_token *tokens);
-t_cmd		*process_input(char *input, t_env *env);
+t_cmd		*ft_build_pipeline(char *input, t_env *env);
 int			syntax_check(t_token *tokens);
 void		unmask_quoted_chars(t_token *token_list);
 void		mask_quoted_chars(char *str);
-int			ft_valid_var(t_token *t);
 
 /* Expansion */
 void		escape_from_dollars(t_token *token_list);
@@ -344,5 +317,7 @@ void		ft_putstr_fd(char *s, int fd);
 int			is_redirection(t_type type);
 int			ft_error(t_data *data);
 int			ft_count_dollars(const char *input, int i);
+void		fd_cleaner(void);
+int			is_heredoc_delim(t_token *token);
 
 #endif

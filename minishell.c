@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: sojammal <sojammal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 21:48:53 by sojammal          #+#    #+#             */
-/*   Updated: 2025/06/05 01:07:37 by sojammal         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:37:00 by sojammal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,10 @@
 
 int	g_sig = 0;
 
-// static void on_exit1(void)
-// {
-//     char cmd[128];
-//     snprintf(cmd, sizeof cmd, "leaks %d", getpid());
-//     system(cmd);
-// }
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*env;
-	// atexit(on_exit1);
+
 	(void)argc;
 	(void)argv;
 	if (!isatty(0) || !isatty(1) || !isatty(2))

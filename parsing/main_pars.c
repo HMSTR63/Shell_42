@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_pars.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: sojammal <sojammal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:39:48 by sojammal          #+#    #+#             */
-/*   Updated: 2025/06/05 01:05:48 by sojammal         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:24:27 by sojammal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static int	expand_and_check_redirs(t_token *tokens, t_env *env)
 
 static int	sanitize_tokens(t_token **tokens)
 {
+	remove_empty_tokens(tokens);
 	nodes_join(*tokens);
 	nodes_join_part2(*tokens);
-	remove_empty_tokens(tokens);
 	clean_hidden_dollars(*tokens);
 	field_split_tokens(tokens);
 	if (ambiguous_redirection(*tokens))
@@ -63,7 +63,7 @@ static int	sanitize_tokens(t_token **tokens)
 	return (1);
 }
 
-t_cmd	*process_input(char *input, t_env *env)
+t_cmd	*ft_build_pipeline(char *input, t_env *env)
 {
 	t_token	*tokens;
 	t_cmd	*cmd_list;

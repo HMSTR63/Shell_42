@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: malaamir <malaamir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:48:18 by malaamir          #+#    #+#             */
-/*   Updated: 2025/06/03 23:13:52 by sojammal         ###   ########.fr       */
+/*   Updated: 2025/06/17 13:11:54 by malaamir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,53 @@ int	update_existing_env(t_env *env, const char *name,
 		env = env->next;
 	}
 	return (1);
+}
+
+static t_env	*fill_env_list(char **envp,
+				t_env **head,
+				t_env **tail,
+				int *flag)
+{
+	int		i;
+	char	*key;
+	char	*equal_sign;
+
+	i = 0;
+	while (envp[i])
+	{
+		equal_sign = ft_strchr(envp[i], '=');
+		key = ft_strndup(envp[i], equal_sign - envp[i]);
+		if (!key)
+			return (NULL);
+		if (ft_strcmp("PATH", key) == 0)
+			(*flag)++;
+		free(key);
+		*head = append_env_node(*head, tail, envp[i]);
+		if (!(*head))
+			return (NULL);
+		i++;
+	}
+	return (*head);
+}
+
+t_env	*init_env(char **envp)
+{
+	t_env	*head;
+	t_env	*tail;
+	int		flag;
+
+	head = NULL;
+	tail = NULL;
+	flag = 0;
+	if (envp[0] == NULL)
+		head = handel_null_env(head);
+	else
+	{
+		head = fill_env_list(envp, &head, &tail, &flag);
+		if (!head)
+			return (NULL);
+	}
+	if (flag == 0)
+		env_set(&head, "PATH", "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
+	return (head);
 }

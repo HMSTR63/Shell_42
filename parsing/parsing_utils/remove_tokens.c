@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sojammal <sojammal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: sojammal <sojammal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:49:24 by sojammal          #+#    #+#             */
-/*   Updated: 2025/06/04 21:43:37 by sojammal         ###   ########.fr       */
+/*   Updated: 2025/06/15 20:27:04 by sojammal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void	remove_empty_tokens(t_token **tokens)
 	t_token	*curr;
 	t_token	*tmp;
 	int		any_word;
+
 	if (!tokens || !*tokens)
 		return ;
-
 	any_word = has_valid_word_token(*tokens);
 	curr = *tokens;
 	while (curr)
